@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:6.0
+    container_name: cropshield_mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - cropshield_net
+
+  ml-service:
+    build:
+      context: ./ml-service
+      dockerfile: Dockerfile
+    container_name: cropshield_ml
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - USE_MOCK_ML=true
+      - PORT=8000
+    networks:
+      - cropshield_net
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cropshield_backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGO_URI=mongodb://mongodb:27017/cropshield
+      - ML_SERVICE_URL=http://ml-service:8000
+      - JWT_SECRET=zenith_cropshield_super_secret_sih_key
+      - CORS_ORIGIN=http://localhost:5173
+    depends_on:
+      - mongodb
+      - ml-service
+    networks:
+      - cropshield_net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cropshield_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:5000/api
+    depends_on:
+      - backend
+    networks:
+      - cropshield_net
+
+volumes:
+  mongo_data:
+
+networks:
+  cropshield_net:
+    driver: bridge
