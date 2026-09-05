@@ -64,7 +64,7 @@ export const ForecastPage = () => {
           <span>How Does the Early-Warning Forecast Work?</span>
         </h3>
         <p className="text-xs text-slate-600 leading-relaxed">
-          The ZENITH predictive model correlates microclimate thresholds with fungal sporulation curves. When relative humidity sustains $>80\%$ at temperatures between $26^\circ\text{C} - 32^\circ\text{C}$ for over 48 hours, spore germination accelerates exponentially. By predicting outbreaks 3 to 7 days before physical symptoms appear, farmers can apply bio-fungicide protective barriers like <em>Trichoderma viride</em> to prevent crop loss.
+          The ZENITH predictive model correlates microclimate thresholds with fungal sporulation curves. When relative humidity sustains above 80% at temperatures between 26°C - 32°C for over 48 hours, spore germination accelerates exponentially. By predicting outbreaks 3 to 7 days before physical symptoms appear, farmers can apply bio-fungicide protective barriers like <em>Trichoderma viride</em> to prevent crop loss.
         </p>
       </div>
     </div>
